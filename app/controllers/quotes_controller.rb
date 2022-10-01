@@ -11,6 +11,11 @@ class QuotesController < ApplicationController
     def new
       @quote = Quote.new
     end
+
+    def vote
+      @quote = Quote.find(params[:id])
+      Quote.increment!(:count)
+    end
   
     def create
       @quote = Quote.new(quote_params)
@@ -18,7 +23,7 @@ class QuotesController < ApplicationController
       if @quote.save
         redirect_to quotes_path, notice: "Quote was successfully created."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
   
